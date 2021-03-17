@@ -55,6 +55,8 @@ class Pyctuator:
 
         * Tornado - `app` is an instance of `tornado.web.Application`
 
+        * Sanic - `app` is an instance of `sanic.app.Sanic`
+
         :param app: an instance of a supported web-framework with which the pyctuator endpoints will be registered
         :param app_name: the application's name that will be presented in the "Info" section in boot-admin
         :param app_description: a description that will be presented in the "Info" section in boot-admin
@@ -103,7 +105,8 @@ class Pyctuator:
             "flask": self._integrate_flask,
             "fastapi": self._integrate_fastapi,
             "aiohttp": self._integrate_aiohttp,
-            "tornado": self._integrate_tornado
+            "tornado": self._integrate_tornado,
+            "sanic": self._integrate_sanic,
         }
         for framework_name, framework_integration_function in framework_integrations.items():
             if self._is_framework_installed(framework_name):
@@ -209,5 +212,18 @@ class Pyctuator:
         if isinstance(app, Application):
             from pyctuator.impl.tornado_pyctuator import TornadoHttpPyctuator
             TornadoHttpPyctuator(app, pyctuator_impl)
+            return True
+        return False
+    
+    def _integrate_sanic(self, app: Any, pyctuator_impl: PyctuatorImpl) -> bool:
+        """
+        This method should only be called if we detected that Sanic is installed.
+        It will then check whether the given app is a Sanic app, and if so - it will add the Pyctuator
+        endpoints to it.
+        """
+        from sanic import Sanic
+        if isinstance(app, Sanic):
+            from pyctuator.impl.sanic_pyctuator import SanicPyctuator
+            SanicPyctuator(app, pyctuator_impl)
             return True
         return False
