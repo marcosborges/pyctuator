@@ -19,6 +19,7 @@ from tests.aiohttp_test_server import AiohttpPyctuatorServer
 from tests.conftest import Endpoints, PyctuatorServer, RegistrationRequest, RegistrationTrackerFixture
 from tests.fast_api_test_server import FastApiPyctuatorServer
 from tests.flask_test_server import FlaskPyctuatorServer
+from tests.sanic_test_server import SanicPyctuatorServer
 
 
 # mypy: ignore_errors
@@ -28,6 +29,7 @@ from tests.tornado_test_server import TornadoPyctuatorServer
 @pytest.fixture(
     params=[FastApiPyctuatorServer, FlaskPyctuatorServer, AiohttpPyctuatorServer, TornadoPyctuatorServer],
     ids=["FastAPI", "Flask", "aiohttp", "Tornado"]
+    
 )
 def pyctuator_server(request) -> Generator:  # type: ignore
     # Start a the web-server in which the pyctuator is integrated

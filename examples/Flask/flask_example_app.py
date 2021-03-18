@@ -21,7 +21,7 @@ def hello():
     return "Hello World!"
 
 
-example_app_address = "host.docker.internal"
+example_app_address = "localhost"
 example_sba_address = "localhost"
 
 Pyctuator(
